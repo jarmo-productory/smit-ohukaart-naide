@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+
+# Python (kui keegi kasutab Python skripti)
+__pycache__/
+*.pyc
+
+# Cursor lokaalne
+.cursor/
+
+# Ajutised failid
+*.tmp
+*~
