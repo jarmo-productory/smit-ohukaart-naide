@@ -1,4 +1,4 @@
-# SMIT koolituse õppematerjal: päev III ehk praktiline arendus
+# SMIT koolituse õppematerjal: päev III ehk praktiline arendus ja QA
 
 > See on koolituse **osalejatele mõeldud materjal** — sisaldab harjutuste lühikirjeldusi ja copy-paste prompte. Kasuta koos koolitusel toimuva juhendamisega.
 
