@@ -1,12 +1,12 @@
-# Ohukaart koolitus — osaleja materjal: harjutused ja promptid
+# SMIT koolituse õppematerjal: päev II ehk AI PO, PM ja analüütiku töös
 
-> See on koolituse **osaleja-materjal** — sisaldab harjutuste lühikirjeldusi, copy-paste promte ja viiteid. Kasuta koos kursusel toimuva juhendamisega.
+> See on koolituse **osalejatele mõeldud materjal** — sisaldab harjutuste lühikirjeldusi, copy-paste prompte ja viiteid. Kasuta koos kursusel toimuva juhendamisega.
 
 ## Ühine kontekst — sünteetiline juhtum "Ohukaart"
 
-Eesti riik (fiktiivne SMIT-i sarnane tellija) arendab uut kodaniku ohuteavituse mobiilirakendust **Ohukaart**. Tänane 112 äpp on aegunud — toetab vaid kõnesid ja lihtsaid tekstiteateid, pildid lähevad dispetšeri käsitsi triage'sse, asutuste-vahelist suunamist tehakse Exceli järgi.
+Stsenaarium: Eesti riik arendab uut kodaniku ohuteavituse mobiilirakendust **Ohukaart**.
 
-Uus Ohukaart peab:
+Ohukaart peab:
 
 -   vastu võtma kodaniku teateid (pilt, tekst, asukoht)
     
@@ -41,7 +41,7 @@ smit-ohukaart-naide/
 
 * * *
 
-# H1 — Copilot eeltöös: põhinõuete ekstraktimine
+# 1\. Copilot eeltöös: põhinõuete ekstraktimine
 
 ## Eesmärk
 
@@ -68,14 +68,14 @@ Kõik failid asuvad: `docs/background-research/`
 
 ## Näidisprompt
 
-> Microsoft 365 Copilot Chat'is (laadid 3 faili manusena) või Copilot Studio agendis.
+> Microsoft 365 Copilot Chat'is:
 
 ```plaintext
 ROLL: Sa oled vanem-analüütik, kes valmistab ette uue avaliku sektori
 toote "Ohukaart" (kodaniku ohuteavituse mobiilirakendus) nõuete
 struktureerimist arendustiimi jaoks.
 
-KONTEKST: Saad sisendiks 3 mustallikat:
+KONTEKST: Saad sisendiks 3 allikat:
 1. Päästekeskuse dispetšeri intervjuu (operaatori vaade)
 2. Taksojuhi intervjuu (lõppkasutaja vaade)
 3. Vananenud 112-äpi lisanõuete Word-dokument (2019)
@@ -115,6 +115,8 @@ VÄLJUND: Struktureeritud Markdown 4 tabeliga. Mitte mingit
 sissejuhatust ega lõpetussõnu — alustad otse esimese tabeliga.
 ```
 
+Kuidas sellest teha korduvkasutatav prompt või oskus Copiloti sees? Õpime looma ja kasutama "agente"
+
 ## Viited
 
 -   [Microsoft 365 Copilot — file analysis](https://learn.microsoft.com/en-us/copilot/microsoft-365/copilot-faq)
@@ -126,91 +128,73 @@ sissejuhatust ega lõpetussõnu — alustad otse esimese tabeliga.
 
 * * *
 
-# H2 — Cursor + intent architecture: AGENTS.md + roadmap + backlog
+# 2\. Cursor + intent architecture: AGENTS.md + roadmap + backlog
 
-## Eesmärk
+## 2.1. AGENTS.md osa 1 — Projekti ülevaade
 
-Õpid:
+Osa 1 on AGENTS.md **päis**: projekti nimi, ühe-lauseline kirjeldus ja viited background-materjalidele. Agendil peab kohe faili avades olema selge, kus ta on ja kuhu lisainfo vaatama minna. Sektsioonid 1–4 märgitakse `<!-- TODO: <roll> -->` — need täidab tehniline tiim hiljem.
 
-1.  Mis on **AGENTS.md** ja miks see on agentse arenduse vundament
-    
-2.  Tõlkima H1 nõuete paketi **projekti konstitutsiooniks** (püsiv kontekst AI-agendile)
-    
-3.  Looma **roadmap'i** (toode → sprintid)
-    
-4.  **Püüdma käigupealt mõtteid backlogi** (Cursor + `gh issue create`)
-    
-
-## Sisendid
-
--   Repo kloonitud lokaalselt, avatud Cursoris
-    
--   `AGENTS.md` repo juurkataloogis (peaaegu tühi — me ehitame)
-    
--   `docs/roadmap.md` stub
-    
--   `docs/background-research/` (sh sinu H1 väljund `h1-noeded.md`)
-    
--   `help/agents-examples/` — AGENTS.md näited (Karpathy, ritemark-native)
-    
-
-## Samm A — AGENTS.md koos-ehitamine
-
-AGENTS.md on **käivitatav kontekst**, mille koostavad erinevate rollidega inimesed koos. 5 komponenti ja kes mida täidab:
-
-| # | Komponent | Põhitäitja | Toetajad |
-| --- | --- | --- | --- |
-| **0** | **Projekti lühikirjeldus/ülevaade ja viited lisainfole** | **PM/PO ← meie fookus** | **Analüütik, Arhitekt** |
-| 1 | **Arendusreeglid / mustrid** | Lead arendaja, PM/PO | Arhitekt |
-| 2 | **Tech stack ülevaade** | Arhitekt | Lead arendaja |
-| 3 | **CI/CD protsess** | DevOps / Lead arendaja | Arhitekt |
-| 4 | **Projekti struktuur** | Arhitekt + Lead arendaja | Analüütik (sprint-konventsiooni osas) |
-| 5 | **AI agendi käitumine ja tööprotsess** | **Analüütik + PM/PO** ← **meie fookus** | Arhitekt |
-
-Sektsioon (5) kodeerib **toote konteksti** AI agendile: stakeholderid, kriitilised invariandid, lahtised vastuolud, sprint-tööprotsess. See on H1 nõuete paketi tõlge käivitatavaks juhiseks.
-
-### AGENTS.md sektsioon (5) mall
+### Mall
 
 ```markdown
-## 5. AI agendi käitumine ja tööprotsess
+# AGENTS.md — Ohukaart
 
-### Toote konstitutsioon
-Ohukaart on kodaniku ohuteavituse mobiilirakendus. Põhiline kasutuspõhimõte:
-**kodaniku teavitus → kahetasemeline triage (AI soovitus + dispetšeri kinnitus)
-→ asutuse-spetsiifiline tegutsemine**. Iga kompromiss prioritiseerib **kodaniku
-turvalisust > süsteemi efektiivsust > arendusmugavust**.
+> Ohukaart on Eesti kodaniku ohuteavituse mobiilirakendus.
+> Kodaniku teavitus → kahetasemeline triage (AI + dispetšeri kinnitus) → asutuse-spetsiifiline tegutsemine.
 
-### Stakeholderid
-- **Dispetšer** (operaator) — vajab inimkontrolli, ei usalda autonoomset AI-d
-  kriitilistes otsustes.
-- **Kasutaja** (kodanik, sh power-user nagu taksojuht) — vajab kiirust,
-  lihtsust, kinnitust et teade jõudis kohale.
+## Viited
+- Tellija brief: `README.md`
+- Taustauuringud: `docs/background-research/`
+- Roadmap: `docs/roadmap.md`
+- Sprint-konventsioon: `docs/sprints/README.md`
+- Sprint-paketi mall: `docs/sprints/_template/`
 
-### Kriitilised invariandid (AI agent EI tohi neid rikkuda)
-1. Iga teate vastuvõtmine tagastab kasutajale ack-i < 2 sekundit
-2. Fotodel maskitakse vaikimisi näod ja autonumbrid enne edasisaatmist
-3. Ükski automaatne suunamine ei käivitu ilma dispetšeri kinnituseta
-   kriitiliste sündmuste (TULEKAHJU, ÕNNETUS, VÄGIVALD) puhul
-4. GPS-asukoht ei ole ainus tõeallikas — kasutaja saab käsitsi parandada
-5. Eesti keel kõikides kasutajale-suunduvates tekstides; ligipääsetavus
-   vastavalt WCAG 2.1 AA
+## 1. Arendusreeglid <!-- TODO: lead-arendaja -->
+## 2. Tech stack <!-- TODO: arhitekt -->
+## 3. CI/CD <!-- TODO: devops -->
+## 4. Projekti struktuur <!-- TODO: arhitekt -->
 
-### Lahtised vastuolud (agent KÜSIB enne otsustamist)
-- Autonumbrite maskimine vs operatiivvajadus → vt sprint-XX-X spec
-- Notifikatsiooni kanal (push/SMS/e-mail) → vt sprint-XX-X spec
-- Foto säilitamise periood ja audit-loog → vt sprint-XX-X spec
-
-### Sprint-tööprotsess
-Iga feature läheb omaette sprinti kataloogi `docs/sprints/sprint-XX-<nimi>/`.
-Vt mall `docs/sprints/_template/` ja konventsioon `docs/sprints/README.md`.
-
-### Background-materjal
-Vt `docs/background-research/` (intervjuud, legacy nõuded, H1 ekstraktitud nõuded).
+## 5. AI agendi käitumine
+(vt allpool — sektsioon 5)
 ```
 
-Teised komponendid (1-4) jäävad TODO-na (`<!-- TODO: arhitekt -->`), kuni tehniline tiim need lisab.
+* * *
 
-## Samm B — Roadmap'i loomine
+## 2.2. AGENTS.md osa 2 — AI agendi käitumine
+
+Osa 2 on AGENTS.md **sektsioon 5**: käitumuslikud reeglid AI-agendile. Need ei kirjelda toodet ega äriloogikat — need ütlevad agendile **kuidas mõelda ja käituda** igas olukorras. Hea sektsioon 5 on alla 50 rea, terav ja negatiivsetele reeglitele kaldu ("ÄRA eelda" töötab paremini kui "Ole täpne").
+
+Eeskuju: `help/agents-examples/karpathy-inspired-CLAUDE.md` — 4 reeglit, alla 60 rea.
+
+### Mall
+
+```markdown
+## 5. AI agendi käitumine
+
+### Mõtle enne koodi kirjutamist
+- Ütle eeldused välja sõnaselgelt. Kui pole kindel — küsi mult juurde (askusertool).
+- On sul mitu tõlgendust? Esita need, ära vali vaikimisi, vaid küsi mult kinnitust.
+- Kas sul on lihtsam lahendus olemas? Ütle seda. Vajadusel vaidle minuga.
+
+### Lihtsus on prioriteet
+- Minimaalne kood, mis lahendab probleemi. Ei midagi spekulatiivset.
+- Ei tekita lisafunktsioone peale küsitu. Ei tekita abstraktsioone ühe-kordse koodi jaoks.
+- 200 rida, mis mahub 50-sse? Kirjuta ümber.
+
+### Kirurgilised muutused
+- Puuduta ainult seda osa koodist, mida pead.
+- Ära "paranda" kõrvalset koodi — isegi kui see on halb.
+- Ühita olemasoleva stiiliga, isegi kui teeksid teisiti. Kui olemasolev muster läheb väga lahku sinu visioonist, siis ütle seda välja ja küsi minult juhendamist.
+
+### Sprint-töövoog
+- ESIMENE samm igas arenduses: `git checkout -b sprint-XX-<nimi>`
+- EI tohi koodi muuta `main`-harul
+- Kui sprindi plaanis on HARD GATE = peatu, küsi kinnitust, ära liigu edasi ilma vastuseta
+```
+
+**NB!** Kogu AGENTS.md maht peaks jääma 80–150 rea vahele. Kui läheb üle, lühenda ja delegeeri skillidesse.
+
+## 2.3. Roadmap'i loomine
 
 Iga sprint = demoeeldav tükike. Igal sprintil on selge **kasutaja-väljund** (mitte sisemine tehniline samm).
 
@@ -248,7 +232,7 @@ VORM: Tabel `docs/roadmap.md` failis veergudega:
 ALUSTA: 6-8 esimese sprindiga.
 ```
 
-## Samm B (jätk) — Idee lennult backlogi
+## 2.4. Idee lennult backlogi
 
 **Argipäeva-mall:** koosolekul, intervjuus või kasutaja-feedback'is märkab keegi väärtusliku mõtte. Klassikaline lahendus: kirjutab Wordi/Notion'isse "TODO" ja unustab. **Agentse arenduse argipäev:** üks lause Cursorisse → `gh issue create` → idee on backlogis, ei kao.
 
@@ -256,10 +240,10 @@ ALUSTA: 6-8 esimese sprindiga.
 
 Kaks erinevat töövoogu, mida segada ei tohi:
 
-| Voog | Sagedus | Vorm | Kaal |
-| --- | --- | --- | --- |
-| **Backlogi täiendamine** | igapäevane, mitu korda | üks Issue, label `backlog` + `triage-vajab` | kerge (20 sek) |
-| **Sprindi planeerimine** | iga 2-4 nädalat | valik Issue'd backlogist, sprint-pakett `docs/sprints/sprint-XX-X/` loodud | raske (mitu tundi) |
+| Voog | Sagedus | Vorm |
+| --- | --- | --- |
+| **Backlogi täiendamine** | igapäevane, mitu korda | üks Issue, label `backlog` + `triage-vajab` |
+| **Sprindi planeerimine** | iga 2-4 nädalat | valik Issue'd backlogist, sprint-pakett `docs/sprints/sprint-XX-X/` loodud |
 
 **Eeldus:** `gh` (GitHub CLI) on installitud + autenditud. Kontroll: `gh auth status`.
 
@@ -304,20 +288,13 @@ sprindi-muudatus.
 -   [GitHub CLI](https://cli.github.com/) — `gh issue create` ja muud käsud
     
 
----
+* * *
 
-# H2.5 — Analüüs enne spec'i: tehnoloogia ja koodibaasi audit
+# 3\. Sprindi ettevalmistus
 
-## Eesmärk
+## 3.1. Analüüs enne spec'i: tehnoloogia ja koodibaasi audit
 
-Õpid analüütiku-spetsiifilist oskust agentse arenduse maailmas:
-
-1. Eristad **olukordi, kus analüüs eelneb spec'ile** olukordadest, kus saab otse spec'i minna
-2. Teed **struktureeritud analüüsi Cursori abiga** (sh veebi-otsing + olemasoleva info süntees)
-3. Salvestad analüüsi `docs/analysis/<KK-PP>-<teema>.md` failina, mis hilisemates sprintides spec.md-le **viidata** saab
-4. Mõistad: **analüüs ei ole spec**. Analüüs ütleb "MIDA ME TEAME"; spec ütleb "MIDA EHITAME". Hea analüüs muudab spec'i kirjutamise 10-minutiseks tööks.
-
-## Millal vajab analüüsi enne spec'i?
+### Millal vajab analüüsi enne spec'i?
 
 | Olukord | Analüüs vajalik? | Põhjus |
 | --- | --- | --- |
@@ -330,23 +307,20 @@ sprindi-muudatus.
 
 **Praktiline reegel:** kui spec.md kirjutamisel hakkad kirjutama "TBD" või "vaja uurida" rohkem kui 3 korral, **peatu** ja tee analüüs eraldi failina.
 
-## Sisendid
+### Tegevus
 
-- H1 nõuete pakett (`docs/background-research/h1-noeded.md`) — eriti "Tuvastatud lüngad" tabel
-- AGENTS.md (toote-kontekst, sektsioon 5 invariandid)
-- Koolitaja antud teema (koolitusel: *"Foto-maskerimise tehnoloogia valik Ohukaartile"*)
-- Cursori web search võime (Cursor Pro) või Claude Code WebSearch
+1.  Loo kataloog `docs/analysis/` (esimene kord — pärast saab kaust juba olemas)
+    
+2.  Loo täna kuupäevaga fail: `docs/analysis/<YYYY-MM-DD>-<teema>.md`
+    
+3.  Käivita Cursoris allpool olev prompt — Cursor uurib veebis, võrdleb variante, sünteesib struktureeritud analüüsi-faili
+    
+4.  Faili lõpus on **konkreetne soovitus** + **lahtised küsimused tabel**, mille saab edaspidi sprindi spec.md-le viidata
+    
 
-## Tegevus
+### Näidisprompt — Cursori deep research prompt
 
-1. Loo kataloog `docs/analysis/` (esimene kord — pärast saab kaust juba olemas)
-2. Loo täna kuupäevaga fail: `docs/analysis/<YYYY-MM-DD>-<teema>.md`
-3. Käivita Cursoris allpool olev prompt — Cursor uurib veebis, võrdleb variante, sünteesib struktureeritud analüüsi-faili
-4. Faili lõpus on **konkreetne soovitus** + **lahtised küsimused tabel**, mille saab edaspidi sprindi spec.md-le viidata
-
-## Näidisprompt — Cursori analüüsi-fail
-
-```
+```plaintext
 KONTEKST: Olen analüütik, kes valmistab ette uut avaliku sektori
 toodet "Ohukaart" (kodaniku ohuteavituse mobiilirakendus). H1
 nõuetes on KRIITILISE prioriteediga "Süsteem maskib fotodel näod
@@ -424,7 +398,9 @@ VÄLJUND: Üks Markdown-fail. Mitte mingit "Loon faili..."
 sissejuhatust — otse esimene pealkiri.
 ```
 
-## Kuidas analüüs hilisemates sprintides kasutusele tuleb
+**Küsimus:** Kuidas sellest luua korduvkasutatav prompt ehk skill?
+
+### Kuidas analüüs hilisemates sprintides kasutusele tuleb
 
 H3-s sprindi spec.md-d luues lingitakse analüüsi-failile:
 
@@ -443,40 +419,20 @@ varianti.
 
 Analüüsi-fail elab repos **igaveseks** — uus sprint, mis sama teemat puudutab, viitab samale analüüsile, mitte kordab uurimist.
 
-## Viited
+### Viited
 
-- `ritemark-native/docs/development/analysis/` — Productory enda toote analüüsi-näited
-- `ritemark-native/docs-internal/analysis/` — strateegia-tasemel analüüsid
-- AGENTS.md sektsioon "AI agendi käitumine" — kus mainitakse, et lahtised vastuolud lahendatakse spec'i juures
-- [Cursor docs — web search](https://docs.cursor.com/) — kuidas Cursoris veebi-otsingu kasutada
-
----
-
-# H3 — Sprindi ettevalmistus: mida teeme + kuidas teeme
-
-## Eesmärk
-
-Õpid:
-
-1.  Eristama **käivitatava spetsifikatsiooni** (`spec.md`) klassikalisest Wordi nõudedokumendist
+-   `ritemark-native/docs/development/analysis/` — Productory enda toote analüüsi-näited
     
-2.  Kirjutama **sprindi protsessi** (`sprint-plan.md`) — release-seos, faasid, HARD GATES, dokumendi-uuendused
+-   AGENTS.md sektsioon "AI agendi käitumine" — kus mainitakse, et lahtised vastuolud lahendatakse spec'i juures
     
-3.  Mõistma **delivery küsimust** — kuhu sprint maandub
+-   [Cursor docs — web search](https://docs.cursor.com/) — kuidas Cursoris veebi-otsingu kasutada
     
 
-## Sisendid
+* * *
 
--   Sinu H2 `docs/roadmap.md` ja sealt valitud sprint (üks rida tabelist)
-    
--   Sprint-paketi mall: `docs/sprints/_template/`
-    
--   AGENTS.md sektsioon 5 (H2-st)
-    
--   `help/speckit/` — Speckit Lite ja päris Speckit juhendid
-    
+## 3.2. Sprindi dokumentatsioon
 
-## Raam — kaks dimensiooni samas paketis
+### Raam — kaks dimensiooni samas paketis
 
 Sprindi ettevalmistus on **kaks paralleelset töövoogu**, mis kohtuvad sprint-paketis:
 
@@ -487,7 +443,7 @@ Sprindi ettevalmistus on **kaks paralleelset töövoogu**, mis kohtuvad sprint-p
 
 Klassikaline viga: kõik kirjutatakse Wordi (kontrollimatu segu) ja arendaja saab "spec'i", mis on osaliselt nõuded ja osaliselt protsess. Agentse arenduse muster eristab need **kaheks failiks**, mis vastutavad eri asjade eest.
 
-## Mida teeme — spec.md sisu (Speckit-stiilis)
+### Mida teeme — spec.md sisu (Speckit-stiilis)
 
 GitHub Speckit muster, kus iga feature spec sisaldab:
 
@@ -506,9 +462,9 @@ GitHub Speckit muster, kus iga feature spec sisaldab:
 
 Erinevus klassikalisest spec'ist: **iga punkt on katsetatav**. AI-agent saab Gherkin-stiilis stsenaariumitest otse testid genereerida; API kontuurist mock'i; käitumislepingutest acceptance criteria'd.
 
-## Kuidas teeme — sprint-plan.md sisu
+### Kuidas teeme — sprint-plan.md sisu
 
-`spec.md` ütleb arendajale "mis valmis peab tulema". `sprint-plan.md` ütleb meeskonnale **kuidas selle juurde jõutakse**. Eri vastutusalad: spec on **toote** dokument, sprint-plan on **protsessi** dokument.
+`spec.md` ütleb arendajale "mis valmis peab tulema". `sprint-plan.md` ütleb meeskonnale **kuidas selle juurde jõutakse**.
 
 ### Sprint-plan.md komponendid
 
@@ -523,7 +479,7 @@ Erinevus klassikalisest spec'ist: **iga punkt on katsetatav**. AI-agent saab Ghe
 5.  **Status** — kus me praegu oleme (Track, Current Phase, Branch)
     
 
-### Sprindi suurus — kaks track'i
+Lisavõimalus: Sprindi suurus — kaks track'i
 
 | Mõõdupuu | Lightweight track | Full 6-phase track |
 | --- | --- | --- |
@@ -533,7 +489,7 @@ Erinevus klassikalisest spec'ist: **iga punkt on katsetatav**. AI-agent saab Ghe
 | Faasid | Plan → Branch → Dev+Test+Cleanup → Commit | Research → Plan → Develop → Test → Cleanup → Deploy |
 | Gates | 1 (sprint-haru loomine) | 3+ (sprint-haru, QA-validator pärast Phase 4 ja Phase 6) |
 
-### 6-faasiline workflow (Full track)
+#### 6-faasiline workflow sprindi sees (nö Full track)
 
 | # | Faas | Mida tehakse | Gate |
 | --- | --- | --- | --- |
@@ -546,7 +502,7 @@ Erinevus klassikalisest spec'ist: **iga punkt on katsetatav**. AI-agent saab Ghe
 
 **HARD GATES** ei ole soovitused — need on kohad, kus AI-agent peab tegevuse **PEATAMA ja paluma kinnitust**. Sellega säilitab analüütik/PO kontrolli AI-juhitud protsessis.
 
-### Kus on sprindid näha?
+### Arutelu: Kuhu peaks sprindid talletuma?
 
 | Vaade | Sobib kellele | Allikas |
 | --- | --- | --- |
@@ -556,11 +512,11 @@ Erinevus klassikalisest spec'ist: **iga punkt on katsetatav**. AI-agent saab Ghe
 | GitHub Projects (Kanban) | Kogu meeskonnale, Scrum-üritusteks | Visuaalne |
 | `docs/CHANGELOG.md` | Avalik (kasutajad) | Pärast sprindi lõppu |
 
-## Speckit on valikuline — kaks teed
+### Lisavõimalus: Speckit on valikuline — kaks teed
 
 Sõltumata sellest, kas kasutad päris Speckit'i või Lite mustrit, sprint-paketi alusfailid (`spec.md` + `sprint-plan.md`) jäävad **samaks**.
 
-### Tee 1 (vaikimisi): Speckit Lite
+#### Variant 1 (vaikimisi): Speckit Lite
 
 Sama 5-sammuline voog (Spec → Clarify → Plan → Tasks → Implement), **ilma installita**. Kogu reeglistik elab:
 
@@ -571,7 +527,7 @@ Sama 5-sammuline voog (Spec → Clarify → Plan → Tasks → Implement), **ilm
 
 Vt täielik juhend: `help/speckit/lite-alternative.md`
 
-### Tee 2 (valikuline): päris Speckit
+#### Variant 2: päris Speckit
 
 Eeldused: Python 3.11+, `uv`, `git`, toetatud AI-agent.
 
@@ -593,7 +549,7 @@ Vt täielik juhend ja 7 slash-käsu kirjeldus: `help/speckit/README.md`
 | `/speckit.analyze` | Konsistentsi-kontroll | Käsitsi review |
 | `/speckit.implement` | Käivitab kõik tasks | Käsitsi commit-haaval |
 
-## Sprint-paketi struktuur
+### Sprint-paketi struktuur
 
 ```plaintext
 docs/sprints/sprint-XX-<luhinimi>/
@@ -608,7 +564,7 @@ docs/sprints/sprint-XX-<luhinimi>/
 
 Mall: `docs/sprints/_template/` — kopeeri see uue sprindi alustamiseks.
 
-## Näidisprompt — sprint-paketi alusfailidide loomine
+### Näidisprompt — sprint-paketi alusfailidide loomine
 
 Loob **mõlemad** alusfailid (spec.md + sprint-plan.md) korraga.
 
@@ -730,7 +686,9 @@ REEGLID
 - VÄLJUND: kaks Markdown-faili õigesse sprint-kataloogi.
 ```
 
-## Viited
+Arutelu: Kuidas me sellest loome skilli?
+
+### Viited
 
 -   [GitHub Spec-Kit](https://github.com/github/spec-kit)
     
@@ -740,42 +698,24 @@ REEGLID
     
 -   `docs/sprints/README.md` — sprint-paketi konventsioon
     
--   [Cucumber / Gherkin sintaks](https://cucumber.io/docs/gherkin/reference/)
-    
--   Eeskuju: `ritemark-native/docs/development/sprints/sprint-72-markdown-navigation-annotations/`
+-   [Cucumber / Gherkin süntaks](https://cucumber.io/docs/gherkin/reference/)
     
 
 * * *
 
-# H4 — Prototüüpimine spec'i põhjal (Cursori staatiline HTML)
+# 4\. Prototüüpimine spec'i põhjal (Cursori staatiline HTML)
 
 ## Eesmärk
 
-Näed **spec → UI tagasiside-ringi sprindi-kontekstis**:
-
-1.  Spec'i põhjal genereerid Cursoris **2-3 variatsiooni** põhiliidesest staatilise HTML/CSS-na
-    
-2.  Avad variatsioonid brauseris ja **valid ühe**, mis sobib kasutaja-vaatega
-    
-3.  Liigud valitud variatsiooniga edasi — see saab **sprindi-paketi osaks** (`docs/sprints/sprint-XX-X/prototype/`)
-    
+Eesmärk on täiendada sprindi materjale ka visuaalse prototüübiga.
 
 ## Prototüübi koht
 
-Klassikaline analüütiku viga: prototüüp tehakse eraldi (Figma, v0.dev, Lovable), näidatakse stakeholderitele, unustatakse. Spec ja prototüüp lähevad ajas lahku.
+Klassikaline probleem: prototüüp tehakse eraldi (Figma, v0.dev, Lovable), näidatakse stakeholderitele, unustatakse. Spec ja prototüüp lähevad ajas lahku.
 
-Agentse arenduse loogika: **prototüüp on sprindi paketi failirühm** `prototype/` **kataloogis.** See kuvab spec'i visuaalselt, annab arendajale referentsi. Sellepärast meie kontekstis: ei Lovable, ei v0.dev — Cursori staatiline HTML otse sprint-kataloogi. Lihtne, versioneeritav, AI-loetav.
+Agentse arenduse loogika: **prototüüp on sprindi paketi failirühm** `prototype/` **kataloogis.** See kuvab spec'i visuaalselt, annab arendajale referentsi. Sellepärast meie kontekstis: ei kasuta Lovable, ega v0.dev — Cursori staatiline HTML otse sprint-kataloogi. Lihtne, versioneeritav, AI-loetav.
 
-## Sisendid
-
--   Sinu H3 spec (`docs/sprints/sprint-XX-X/spec.md`)
-    
--   Sinu H3 scenarios.md (Gherkin) — konkreetsed kasutaja-juhud
-    
--   AGENTS.md (disainipõhimõtted sektsioonis 5)
-    
-
-## Näidisprompt — Cursori HTML prototüüp
+## Näidisprompt — Ohukaardi HTML prototüüp
 
 ```plaintext
 KONTEKST: Olen sprindi kataloogis `docs/sprints/sprint-XX-<nimi>/`.
@@ -783,11 +723,10 @@ Spec on `spec.md`, käitumislepingud `scenarios.md`. Projekti
 disainipõhimõtted on AGENTS.md sektsioonis 5.
 
 ÜLESANNE: Loo 2-3 variatsiooni põhiliidese prototüübist staatilise
-HTML/CSS-na. EI mingit JavaScripti raamistikku — vanilla HTML +
-Tailwind CDN (https://cdn.tailwindcss.com).
+JS/HTML/CSS-na. Eelista Tailwind stiile (https://cdn.tailwindcss.com). 
 
 DEMONSTREERI: scenarios.md PEAMINE õnnelik rada (S1 või esimene
-"Given/When/Then" leping). Erijuhte ei pea katta.
+"Given/When/Then" stsenaarium). Erijuhte ei pea katta.
 
 VARIATSIOONID — tee 2-3 disaini-LÄHTEKOHTA, mis erinevad ÄRILISES
 loogikas, mitte ainult värvides:
@@ -796,6 +735,8 @@ loogikas, mitte ainult värvides:
 - v2-<nimi>.html — nt "alusriba kiirnupp + täisekraani kontekst"
 - v3-<nimi>.html — nt "fullscreen splash + üks suur primaarne tegevus"
 
+Ära mine enne sügavusse, kui ma pole valinud ühte variatsiooni.
+
 DISAINI PÕHIMÕTTED (võta AGENTS.md sektsioonist 5):
 - Mobile-first (iPhone 14 viewport, ~390x844)
 - Suurte puute-aladega (vähemalt 48x48 pt nupud)
@@ -803,11 +744,7 @@ DISAINI PÕHIMÕTTED (võta AGENTS.md sektsioonist 5):
 - Eesti keel kõikides tekstides
 - Mock'i kõik andmed — ei mingit kasutaja-sisestust prototüübis
 
-VÄLJUND: 2-3 eraldi HTML-faili kataloogis `prototype/`. Iga fail on
-isekehestuv (avaneb otse brauseris). Iga faili ülaservas kommentaar
-mis kirjeldab variatsiooni põhiideed (üks lause).
-
-ÄRA loo `main.html` — sa valid ise variatsiooni ja nimetad ümber.
+VÄLJUND: Index HTML-fail kataloogis `prototype/`, kust saan valida variatsiooni ja anda tagasisidet. Iga variatsiooni fail on self-contained (avaneb otse brauseris). 
 
 ÄRA modifitseeri spec.md ega scenarios.md — kui prototüüp paljastab
 spec'i lünga, märgi see eraldi kommentaariga prototüübi-failis (nt
@@ -819,10 +756,12 @@ nähtav -->").
 
 -   **Lihtne:** ava fail `file://` URLina (paremklõps → "Open with browser")
     
--   **Parem:** käivita kohalik server: `cd prototype && python3 -m http.server 8000` → `http://localhost:8000/`
+-   **Kõige parem (Cursoris):** kasuta Cursori built-in brauserit.
     
--   **Kõige parem (Cursoris):** kasuta Cursori Live Preview pluginat otse failil
-    
+
+## Täiendused
+
+Täienda prototüüpi paari kolme promptiga valides ühe suuna põhjaks.
 
 ## Viited
 
@@ -862,14 +801,3 @@ nähtav -->").
 -   [RIA disainisüsteem](https://disainis%C3%BCsteem.ria.ee/)
     
 -   [Eesti e-riigi standardid](https://www.ria.ee/)
-    
-
-## Seotud materjal selles repos
-
--   `help/speckit/` — Speckit ülevaade + Lite alternatiiv
-    
--   `help/agents-examples/` — AGENTS.md / CLAUDE.md näited
-    
--   `docs/sprints/README.md` — sprint-paketi konventsioon
-    
--   `docs/sprints/_template/` — sprint-paketi mall
