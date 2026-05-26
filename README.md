@@ -1,6 +1,12 @@
-# Ohukaart — koolituse näidisrepo
+# Ohukaart
 
-> Sünteetiline juhtum SMIT-i AI tarkvaraarenduse arenguprogrammi **II päeva** harjutusteks. See ei ole päris süsteem ega ühegi konkreetse riigiasutuse projekt — kõik nimed, struktuurid ja nõuded on välja mõeldud koolituse eesmärgil.
+> Sünteetiline avaliku sektori toote case study — kodaniku ohuteavituse mobiilirakendus AI-toega klassifikatsiooni ja suunamisega. See ei ole päris süsteem ega ühegi konkreetse riigiasutuse projekt; nimed, struktuurid ja nõuded on väljamõeldud harjutuskeskkonna jaoks.
+
+## Mis see repo on
+
+Repo sisaldab **toote konteksti**, **taustauuringut**, **struktureeritud nõudeid** ja **sprint-paketi töövoogu** (spec, stsenaariumid, plaan, prototüüp). Eesmärk on harjutada nõuete töötlust, intent architecture'i ja spetsifikatsioone AI-agenditega — mitte ehitada tootmisrakendust.
+
+Koolituse juhised, harjutused ja promptid on ainult kaustas [`help/`](help/).
 
 ## Tellija brief (fiktiivne)
 
@@ -10,13 +16,13 @@
 
 **Lühivisioon:** Kodanik, kes märkab avalikus ruumis ohtu (lõhkenud teekate, suitsev hoone, kahtlane pakk, kütusereostus, ohtlik liiklusolukord), saab mobiilirakenduses sündmusest **5 sekundiga** teada anda — teeb pildi, kinnitab asukoha, valib (või laseb AI-l valida) ohu kategooria, saadab. AI klassifitseerib pildi ja konteksti, määrab esialgse prioriteedi ja **suunab teavituse õige asutuseni** (Päästeamet / PPA / Maanteeamet / KOV). Dispetšer saab ühtsesse operatiivvaatesse triage'tud teavituse koos AI usaldushinnetega.
 
-### Kontekst, miks see vajalik on (fiktiivne põhjendus)
+### Kontekst
 
-Eestis tehakse aastas ~200 000 hädaabikõnet 112-le. Sealhulgas hinnanguliselt 30-40% on **mitte-hädaolukorrad**, mis koormavad keskust, aga vajaksid pigem **operatiivset teavitust** mõnele teisele teenusele (nt KOV-i kommunaalteenistus, Maanteeamet). Tänase 112 äpiga saab esitada ohuteavitusi, aga nende klassifitseerimine ja suunamine on käsitsi.
+Eestis tehakse aastas ~200 000 hädaabikõnet 112-le; hinnanguliselt 30–40% on **mitte-hädaolukorrad**, mis koormavad keskust, aga vajaksid pigem **operatiivset teavitust** teisele teenusele (nt KOV-i kommunaalteenistus, Maanteeamet). Tänase 112 äpiga saab esitada ohuteavitusi, aga klassifitseerimine ja suunamine on käsitsi.
 
-Visioon: AI-toega "ohukanali" kasutuselevõtt **vabastab dispetšerite aega** päris-hädaolukordade tarbeks, **tõstab teavituste kvaliteeti** struktureeritud andmetega (pilt + GPS + AI-klassifikatsioon), ja **paneb õigele agentuurile** teavituse otse.
+Ohukaardi visioon: AI-toega ohukanal **vabastab dispetšerite aega** päris-hädaolukordade tarbeks, **tõstab teavituste kvaliteeti** (pilt + GPS + klassifikatsioon) ja **suunab teavituse õigele agentuurile**.
 
-### Sidusrühmad ja kasutajad
+### Sidusrühmad
 
 | Roll | Vajadus | Liides |
 |---|---|---|
@@ -25,58 +31,80 @@ Visioon: AI-toega "ohukanali" kasutuselevõtt **vabastab dispetšerite aega** p�
 | **Asutuse-spetsiifiline vastuvõtja** (KOV, Maanteeamet, PPA) | Ainult tema vastutusala teavitused. SLA-jälgimine. | Web vaade, e-mail/SMS notif |
 | **Operatiivjuht** | Trendid, hotspot'id, ressursside planeerimine. | Dashboard |
 | **AI Trust & Safety analüütik** | Klassifikaatori kvaliteet, vale-positiivid, mudeli drift. | Monitoring dashboard |
-| **Privaatsuse-haldur (DPO)** | GDPR-i nõuded: näod, autonumbrid pildil. Andmete säilitamise periood. | Audit log, policy konsool |
+| **Privaatsuse-haldur (DPO)** | GDPR: näod, autonumbrid pildil; säilitamise periood. | Audit log, policy konsool |
 
-## Koolituse loogika
+## Põhinõuded (ülevaade)
 
-II päeva harjutused töötavad selle repo'ga **kihiti**:
+Täielik nõuete pakett, vastuolud ja lüngad: [`docs/background-research/112-nouded.md`](docs/background-research/112-nouded.md).
 
-| Harjutus | Mida tehakse | Sisend | Väljund |
-|---|---|---|---|
-| **H1: Copilot eeltöös** | Põhinõuete ekstraktimise agent loeb intervjuud + legacy Wordi → struktureeritud nõuded | `docs/intervjuu-paastedispetser.md` + `docs/legacy-112-lisanouded-2019.docx` | Osaleja oma `nouded-v1.md` (Copilotis) |
-| **H2: Konstitutsioon + roadmap** | AGENTS.md / Cursor Rules täiendamine + projekti roadmap | See repo + H1 väljund | Täiendatud `AGENTS.md` + `roadmap.md` |
-| **H3: Speckit feature spec** | Üks `roadmap-valikud/` feature → käivitatav spec | `roadmap-valikud/` ühe faili valik | Uus fail `specs/<feature>.spec.md` |
-| **H4: Prototüüpimine** | H3 spec → töötav UI prototüüp (v0.dev / Lovable / Cursor) | H3 väljund | Töötav prototüüp (välja koolitusrepo'st) |
+### Funktsionaalsed
+
+| ID | Nõue | Prioriteet |
+|---|---|---|
+| F-01 | Tekstipõhine teavitus 112 keskusele | Kriitiline |
+| F-02 | Teavitusele kuni 3 pilti | Kriitiline |
+| F-03 | GPS-asukoht automaatselt teavitusele | Kriitiline |
+| F-04 | Kinnitus, et teavitus on vastu võetud | Kriitiline |
+| F-05 | Dispetšer saab vastata ja lisainfot küsida | Oluline |
+| F-06 | Kasutaja ei määra prioriteeti ega sündmuse tüüpi | Oluline |
+
+### Mittefunktsionaalsed
+
+| ID | Nõue | Prioriteet |
+|---|---|---|
+| NF-01 | Ööpäevaringne kättesaadavus | Kriitiline |
+| NF-02 | Edastus dispetšerini ≤ 60 s | Kriitiline |
+| NF-03 | Töö aeglases võrgus (vähemalt tekst 2G-l) | Oluline |
+| NF-04 | Krüpteeritud edastus (TLS 1.2+) | Kriitiline |
+| NF-05 | Piltidel olevate isikuandmete reguleerimine | Kriitiline |
+
+### Olulised vastuolud ja lüngad
+
+| Teema | Kokkuvõte |
+|---|---|
+| Tagasiside | Kasutaja tahab kinnitust, mitte pidevat suhtlust; dispetšer ei tea ootusi. |
+| Prioriteet | Kasutaja ei taha valida; operaator vajab reageerimiskiiruse infot. |
+| Privaatsus | Pildistamise kõhklus vs isikuandmete risk piltidel. |
+| Asukoht | GPS vea käsitlemine pole lahti kirjutatud. |
+| Säilitus | Kasutaja ei tea, kui kaua pilte hoitakse. |
+| Klassifitseerimine | Dispetšer ei usalda täielikku automaatikat. |
+
+## Taustauuring
+
+Mustad sisendid nõuete töötluseks:
+
+| Fail | Sisu |
+|---|---|
+| [`intervjuu-paastedispetser.md`](docs/background-research/intervjuu-paastedispetser.md) | Päästekeskuse dispetšeri vaade |
+| [`intervjuu-taksojuht.md`](docs/background-research/intervjuu-taksojuht.md) | Kodaniku-kasutaja vaade |
+| [`legacy-112-lisanouded-2019.docx`](docs/background-research/legacy-112-lisanouded-2019.docx) | Vananenud nõuete dokument |
+| [`112-nouded.md`](docs/background-research/112-nouded.md) | Struktureeritud nõuded, vastuolud, lüngad |
 
 ## Repo struktuur
 
 ```
 smit-ohukaart-naide/
-├── README.md                                  # Sina oled siin
-├── AGENTS.md                                  # AI-agendi konteksti baas (H2 täiendab)
+├── README.md                 # Repo ja toote ülevaade (see fail)
+├── AGENTS.md                 # AI-agendi kontekst (täiendatakse töö käigus)
 ├── docs/
-│   ├── intervjuu-paastedispetser.md           # H1 sisend 1
-│   └── legacy-112-lisanouded-2019.docx        # H1 sisend 2
-├── roadmap-valikud/                           # H2/H3 jaoks 4 feature-valikut
-│   ├── 01-kodanik-app-foto-teavitus.md
-│   ├── 02-dispetseri-triage-vaade.md
-│   ├── 03-operatiivdashboard.md
-│   └── 04-gdpr-pildi-maskerimine.md
-├── specs/                                     # Tühi — H3 osalejad täidavad
-└── .claude/skills/                            # Tühi — H2 osalejad täidavad
+│   ├── background-research/  # Intervjuud, legacy, nõuete väljund
+│   ├── roadmap.md            # Feature'ite järjekord
+│   └── sprints/              # Sprint-paketid (_template/ + sprint-XX-…/)
+├── help/                     # Koolitusmaterjal, näited, Speckit juhendid
+└── specs/                    # Aegunud — vt docs/sprints/
 ```
 
-## Kuidas seda repo't koolituses kasutada
+## Töövoog
 
-**Enne koolitust:**
-1. Klooni repo: `git clone https://github.com/jarmo-productory/smit-ohukaart-naide.git`
-2. Ava Cursoris (`File → Open Folder → smit-ohukaart-naide`)
-3. Kontrolli, et Copilot Studio / Microsoft 365 Copilot ligipääs on töötav
-
-**Koolituse käigus:**
-- H1 toimub Copilotis (web liides), mitte selles repos
-- H2-H4 toimuvad selles repos, Cursoris
-
-**Pärast koolitust:**
-- Repo on **avalik** — osalejad võivad oma haru fork'ida ja jätkata harjutamist
-- Productory võtab tagasiside põhjal kasutusele uuendused
+1. **Taustauuring** — loe `docs/background-research/`, täienda või võrdle `112-nouded.md`-ga.
+2. **Roadmap** — planeeri feature'id [`docs/roadmap.md`](docs/roadmap.md)-is.
+3. **Sprint-pakett** — kopeeri [`docs/sprints/_template/`](docs/sprints/_template/), täida spec, stsenaariumid, plaan, taskid; konventsioon: [`docs/sprints/README.md`](docs/sprints/README.md).
+4. **AI kontekst** — täienda [`AGENTS.md`](AGENTS.md) projekti reeglite ja otsustega.
 
 ## Litsents
 
 MIT — kasuta vabalt, kohanda oma organisatsioonile.
 
-## Kontaktid
+## Kontakt
 
-Productory Services OÜ
-- Jarmo Tuisk · jarmo@productory.eu · +372 520 1443
-- Kristiina Tuisk · kristiina@productory.eu · +372 5660 5457
+Productory Services OÜ · [jarmo@productory.eu](mailto:jarmo@productory.eu) · [kristiina@productory.eu](mailto:kristiina@productory.eu)
