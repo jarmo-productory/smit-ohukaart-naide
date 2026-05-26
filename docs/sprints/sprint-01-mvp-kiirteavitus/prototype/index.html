@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Ohukaart — Ohuteavitus (prototüüp)</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'ria-blue': '#005AA3',
+            'ria-blue-dark': '#004277',
+            'ria-success': '#067A42',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    .phone-frame { width: 390px; height: 844px; }
+    @media (max-width: 420px) {
+      .phone-frame { width: 100vw; height: 100dvh; border-radius: 0; box-shadow: none; }
+      .phone-shell { padding: 0; background: transparent; min-height: 100dvh; }
+    }
+    #map { z-index: 0; }
+    .leaflet-control-attribution { font-size: 9px; }
+    .location-marker {
+      background: #005AA3;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,.35);
+      width: 18px;
+      height: 18px;
+      margin-left: -9px;
+      margin-top: -9px;
+    }
+  </style>
+</head>
+<body class="phone-shell flex min-h-screen items-center justify-center bg-slate-200 p-4">
+  <!-- Spec gap: scenarios.md puudub sprint-01 kataloogis -->
+  <!-- Spec gap: R2 lubab „kaardil/mapiinisel“ — valitud suund: OSM kaart (v2) -->
+
+  <div class="phone-frame relative flex flex-col overflow-hidden rounded-[2rem] border border-slate-300 bg-white shadow-xl" role="application" aria-label="Ohukaart prototüüp">
+
+  <div id="screen-main" class="relative flex min-h-0 flex-1 flex-col">
+    <div class="relative min-h-0 flex-1">
+      <div id="map" class="absolute inset-0" aria-label="OpenStreetMap — sinu asukoht"></div>
+
+      <header class="absolute inset-x-0 top-0 z-[500] border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur-sm pt-12 pb-3 px-4" role="banner">
+        <div class="flex min-h-[48px] items-center justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-[11px] font-semibold uppercase tracking-wide text-ria-blue">Ohukaart</p>
+            <h1 class="truncate text-lg font-semibold leading-tight text-slate-900">Ohuteavitus</h1>
+          </div>
+          <div class="flex shrink-0 items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5" role="status" aria-label="GPS asukoht tuvastatud">
+            <span class="h-2 w-2 shrink-0 rounded-full bg-ria-success" aria-hidden="true"></span>
+            <span class="text-xs font-medium text-ria-success">Asukoht OK</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="pointer-events-none absolute inset-x-0 bottom-[42%] z-[500] text-center">
+        <span class="rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-slate-700 shadow">Sinu asukoht</span>
+      </div>
+    </div>
+
+    <div class="relative z-10 shrink-0 rounded-t-2xl border-t border-slate-700 bg-slate-900 shadow-[0_-4px_24px_rgba(0,0,0,.35)]">
+      <div class="mx-auto mt-2 h-1 w-10 rounded-full bg-slate-600" aria-hidden="true"></div>
+      <div class="max-h-[200px] overflow-y-auto px-4 pb-2 pt-3">
+        <p class="text-xs font-medium uppercase tracking-wide text-slate-400">Kirjeldus</p>
+        <p class="mt-1 text-base leading-relaxed text-slate-100">
+          Kõnnitee servas on suur pragu, ohtlik jalakäijatele. Asukoht on bussipeatuse kõrval.
+        </p>
+        <p class="mt-2 text-xs font-mono text-slate-400">59.436962, 24.753574 · Narva mnt 5, Tallinn</p>
+      </div>
+    </div>
+
+    <footer class="relative z-10 shrink-0 border-t border-slate-200 bg-white px-4 pb-8 pt-3">
+      <button type="button" id="btn-send"
+        class="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-xl bg-ria-blue text-lg font-semibold text-white active:bg-ria-blue-dark focus:outline-none focus:ring-2 focus:ring-ria-blue focus:ring-offset-2">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+        Saada teavitus
+      </button>
+    </footer>
+  </div>
+
+  <div id="screen-sending" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-900/40 backdrop-blur-sm px-6">
+    <div class="w-full max-w-[280px] rounded-2xl bg-white p-6 text-center shadow-xl">
+      <div class="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-ria-blue" role="status" aria-label="Saadan"></div>
+      <p class="mt-4 font-medium text-slate-900">Saadan…</p>
+    </div>
+  </div>
+
+  <div id="screen-success" class="hidden absolute inset-0 z-30 flex flex-col bg-white">
+    <header class="shrink-0 border-b border-slate-100 px-4 pb-4 pt-12">
+      <h2 class="text-xl font-semibold text-slate-900">Vastu võetud</h2>
+    </header>
+    <div class="flex flex-1 flex-col items-center justify-center px-6 text-center">
+      <div class="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-ria-success" aria-hidden="true">
+        <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <p class="mt-4 text-lg font-medium text-slate-900">Teavitus on vastu võetud</p>
+      <p class="mt-1 text-sm text-slate-600">ID: <span class="font-mono font-semibold">OHU-2026-004821</span></p>
+      <p class="mt-4 text-xs text-slate-500">Asukoht ja tekst edastati operatiivkanalisse.</p>
+    </div>
+    <div class="px-4 pb-10">
+      <button type="button" id="btn-reset" class="flex min-h-[48px] w-full items-center justify-center rounded-lg border-2 border-slate-300 font-semibold text-slate-700">Tagasi kaardile (demo)</button>
+    </div>
+  </div>
+
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script>
+    const MOCK_LAT = 59.436962;
+    const MOCK_LON = 24.753574;
+
+    const map = L.map('map', {
+      zoomControl: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      dragging: true,
+      touchZoom: true,
+    }).setView([MOCK_LAT, MOCK_LON], 17);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> kaastöölised',
+    }).addTo(map);
+
+    L.marker([MOCK_LAT, MOCK_LON], {
+      icon: L.divIcon({
+        className: '',
+        html: '<div class="location-marker" aria-hidden="true"></div>',
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
+      }),
+      interactive: false,
+    }).addTo(map);
+
+    const main = document.getElementById('screen-main');
+    const sending = document.getElementById('screen-sending');
+    const success = document.getElementById('screen-success');
+
+    document.getElementById('btn-send').addEventListener('click', () => {
+      sending.classList.remove('hidden');
+      setTimeout(() => {
+        sending.classList.add('hidden');
+        main.classList.add('hidden');
+        success.classList.remove('hidden');
+      }, 1100);
+    });
+
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      success.classList.add('hidden');
+      main.classList.remove('hidden');
+      setTimeout(() => map.invalidateSize(), 50);
+    });
+  </script>
+</body>
+</html>

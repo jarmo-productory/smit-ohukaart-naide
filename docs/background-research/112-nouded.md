@@ -7,6 +7,7 @@
 | F-04 | Kasutaja peab saama kinnituse, et teavitus on vastu võetud. | legacy-112-lisanouded-2019; intervjuu-taksojuht | Kriitiline | „Kasutaja peab saama kinnituse…“ |
 | F-05 | Dispetšer peab saama kasutajale vastata ja vajadusel lisainfot küsida. | legacy-112-lisanouded-2019 | Oluline | „Dispetšer peab saama kasutajale saata tagasi sõnumi…“ |
 | F-06 | Kasutaja ei pea määrama prioriteeti ega sündmuse tüüpi. | intervjuu-taksojuht | Oluline | „Ärge pange mingit tähtaja-küsimust ja prioriteedi-värki.“ |
+| F-07 | Süsteem peab suunama kinnitatud teavituse õige asutuseni (Päästeamet / PPA / Maanteeamet / KOV). | README brief; intervjuu-paastedispetser | Kriitiline | Dispetšer: „äpp ei tea kuhu suunata. Kogu suunamine on käsitsi minu töö.“ |
 
 | ID | Nõue | Allikas | Prioriteet | Märkused |
 |---|---|---|---|---|

@@ -13,7 +13,7 @@ Kombinatsioon koosneb kahest osast, mis töötavad **koos**:
 | Osa | Asukoht | Roll | Millised tööriistad näevad |
 |---|---|---|---|
 | **A** — Sprint Workflow sektsioon | `AGENTS.md` (repo juur) | Tööriista-agnostiline "põhiseadus" — kõik agendid loevad enne tööd | Claude Code, Cursor, Copilot, Codex, Gemini... |
-| **B** — `sprint-planning` skill | `.claude/skills/sprint-planning/SKILL.md` | Claude Code spetsiifiline süvendatud juhend, automaatselt triggerdav | Ainult Claude Code |
+| **B** — `sprint-planning` skill | `.cursor/skills/sprint-planning/SKILL.md` | Sprint-paketi bootstrap (`spec.md` + `sprint-plan.md`) roadmap'ist | Cursor, Claude Code, Codex (kui skill kaust on nähtav) |
 
 **Miks mõlemad:**
 - **A üksi** = ükski agent tunneb põhireegleid, aga Claude'i kogemus on sama "lame" kui teistel. Hea kui sa kasutad mitut tööriista, aga puudub kiire UX.
@@ -77,7 +77,14 @@ tasks.md checklist.
 
 ---
 
-## Variant B — `sprint-planning` skill (Claude Code)
+## Variant B — `sprint-planning` skill
+
+Projekti skill: [`.cursor/skills/sprint-planning/SKILL.md`](../../.cursor/skills/sprint-planning/SKILL.md) (kasutaja prompt: [`prompt-template.md`](../../.cursor/skills/sprint-planning/prompt-template.md)).
+
+Allpool on **vanem Speckit-lite** näide (`specs/<slug>/` struktuur). Ohukaardi repo kasutab hoopis `docs/sprints/sprint-XX-<slug>/` — eelista ülalolevat skilli.
+
+<details>
+<summary>Vanem näide (specs/ kaust, mitte docs/sprints/)</summary>
 
 Loo fail `.claude/skills/sprint-planning/SKILL.md`:
 
@@ -201,6 +208,8 @@ Pärast iga sammu (1-4) anna kasutajale:
 ```
 
 **Selgitus:** see skill **automaatselt triggerub**, kui kasutaja ütleb märksõnu (`description:` reas), ja juhib agendi läbi samade 5 sammu nagu Speckit, aga ilma `.specify/`-kaustata ja ilma slash-käskudeta. Triggerimine põhineb märksõnadel, mitte slash-prefiksil.
+
+</details>
 
 ---
 

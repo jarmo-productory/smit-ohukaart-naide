@@ -311,7 +311,7 @@ lahtisteks — vt `docs/background-research/h1-noeded.md` "Tuvastatud
 lüngad" tabelit.
 
 ÜLESANNE: Loo analüüsi-fail
-`docs/analysis/<YYYY-MM-DD>-foto-maskerimise-tehnoloogiad.md`,
+`docs/analysis/<YYYY-MM-DD>-foto-maskeerimise-tehnoloogiad.md`,
 mis vastab küsimusele "Milline foto-maskerimise tehnoloogia sobib
 Ohukaart kontekstis?"
 
@@ -320,7 +320,7 @@ Otsi 2026 seisuga aktuaalseid lahendusi. Märgi iga väite juurde allikas.
 
 STRUKTUUR (kasuta täpselt seda):
 
-# Foto-maskerimise tehnoloogia valik Ohukaart äpile
+# Foto-maskeerimise tehnoloogia valik Ohukaart äpile
 
 **Date:** <YYYY-MM-DD>
 **Context:** Ohukaart sprint XX (foto isikuandmete maskimise pipeline)
