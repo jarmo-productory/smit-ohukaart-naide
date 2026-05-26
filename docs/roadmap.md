@@ -1,3 +1,18 @@
 # Roadmap
 
-- [ ] Sprint-01 - Lahenduse kirjeldus
+Ohukaardi esimene arendusjärk jagab toote demoeeldatavateks sprintideks. Iga sprint on kasutajale nähtava väljundiga tarne, mitte ainult tehniline ettevalmistus.
+
+Iga rida reserveerib sprint-paketi kataloogi `docs/sprints/sprint-XX-<luhinimi>/`, kus peavad enne implementatsiooni olema vähemalt `spec.md`, `scenarios.md`, `technical-plan.md`, `tasks.md` ja `sprint-plan.md`.
+
+Maht: `S` = väike, `M` = keskmine, `L` = suur. Kriitiline rada on `01 -> 04 -> 05 -> 06 -> 08`; sprindid `02`, `03` ja `07` saavad pärast MVP-d liikuda osaliselt paralleelselt.
+
+| Sprint# | Pealkiri | Eesmärk (1 lause) | H1 nõuded | Sõltuvused | Maht |
+|---|---|---|---|---|---|
+| 01 | `sprint-01-mvp-kiirteavitus` - MVP kiirteavitus | Kodanik saab saata tekstilise ohuteavituse koos automaatse GPS-asukohaga ja näeb, et 112 operatiivvaade võttis selle vastu. | F-01, F-03, F-04, NF-02, NF-04 | Alguspunkt; ei sisalda foto, prioriteedi, AI-suunamise ega lisasuhtluse vastuolulisi otsuseid. | M |
+| 02 | `sprint-02-fotoga-teavitus` - Fotoga teavitus ja privaatsusotsus | Kodanik saab lisada teavitusele kuni 3 pilti ning sprindi spec fikseerib enne ehitamist nägude, autonumbrite ja säilituse design-otsuse. | F-02, NF-05 | Pärast 01; saab liikuda paralleelselt 03-ga; spec peab lahendama H1 osa 3 pildi ja privaatsuse vastuolu. | M |
+| 03 | `sprint-03-aeglane-vork` - Aeglase võrgu kiirteavitus | Kodanik saab vähemalt tekstiteavituse saata ka kehvas mobiilivõrgus ja saab arusaadava oleku saatmise õnnestumise kohta. | F-01, F-04, NF-03, NF-02 | Pärast 01; paralleelne 02-ga, sest ei sõltu fotovoost. | M |
+| 04 | `sprint-04-dispetseri-triaaz` - Dispetšeri vastuvõtu- ja vastamisvaade | Dispetšer näeb saabunud teavitusi ühes järjekorras, avab detaili ja saab vajadusel kasutajalt lisainfot küsida. | F-04, F-05, NF-02, NF-04 | Pärast 01; 02 rikastab detailivaadet fotodega, kuid põhitöö ei pea 02 lõppu ootama. | M |
+| 05 | `sprint-05-ai-soovitus` - AI-soovitus dispetšeri kontrolliga | Dispetšer saab teavitusele tüübi, prioriteedi ja asutuse soovituse, kuid lõplik kinnitamine või muutmine jääb inimesele. | F-06, NF-02, NF-05 | Pärast 04; spec peab alustama H1 osa 3 prioriteedi ja klassifitseerimise design-otsusega. | L |
+| 06 | `sprint-06-asutuse-suunamine` - Kinnitatud suunamine asutusele | Kinnitatud teavitus liigub õige asutuse vastuvõtjavaatesse nii, et kodanik ei pea vastutavat kanalit teadma. | F-01, F-06, NF-02, NF-04 | Pärast 05; sõltub dispetšeri kinnitatud triage'i ja suunamisreeglite otsusest. | M |
+| 07 | `sprint-07-asukoha-tapsustus` - GPS vea parandamine | Kodanik saab automaatset GPS-asukohta kontrollida ja vajadusel täpsustada enne teavituse saatmist. | F-01, F-03, NF-02 | Pärast 01; saab liikuda paralleelselt 02 või 03-ga; spec peab lahendama asukoha vea käsitlemise lünga. | S |
+| 08 | `sprint-08-operatiivulevaade` - Operatiivülevaade ja korduvad ohud | Operatiivjuht näeb kaardil korduvaid või kuhjuvaid teavitusi, et märgata piirkondlikke riske ja ressursivajadust. | F-03, NF-01, NF-02 | Pärast 06; vajab kinnitatud teavituste ja asutuse suunamise andmevoogu. | M |
