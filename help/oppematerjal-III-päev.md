@@ -4,17 +4,27 @@
 
 ## Kontekst
 
-II päeval valmis sprint-pakett (`spec.md`, `scenarios.md`, `sprint-plan.md`). III päeval arendaja+QA viivad selle täieliku elutsükli läbi — planeerimisest kuni PR-i ja AI review'ni.
+II päeval valmis sprint-paketi alusmaterjal (`spec.md` + `sprint-plan.md`) ning `sprint-planning` skill PO osa. III päeval arendaja+QA täidavad ülejäänud SDD-artefaktid (`scenarios.md`, `technical-plan.md`, `tasks.md`), ehitavad ülejäänud skill'id ja viivad sprindi täieliku elutsükli läbi — planeerimisest kuni PR-i ja AI review'ni.
 
 ```plaintext
 smit-ohukaart-naide/
-├── AGENTS.md                         # II päev: sektsioonid 0+5 täidetud
+├── AGENTS.md                         # II päev: Viited + sektsioon 5 täidetud
 ├── docs/
-│   └── sprints/sprint-01-pildi-saatmine/
-│       ├── spec.md                   # II päev — MIDA
-│       ├── scenarios.md              # II päev — Gherkin
-│       └── sprint-plan.md            # II päev — protsess
-└── .agents/skills/                   # III päev — 4 skill'i, mille ise ehitad
+│   └── sprints/sprint-01-mvp-kiirteavitus/
+│       ├── spec.md                   # II päev — MIDA (R1..R6: tekst + GPS + ack)
+│       ├── sprint-plan.md            # II päev — protsess
+│       ├── prototype/                # II päev — kodaniku UI v2 (HTML)
+│       └── research/                 # II päev — prototype-feedback
+│       └── scenarios.md              # III päev Phase 1 — Gherkin
+│       └── technical-plan.md         # III päev Phase 1 — arhitektuur
+│       └── tasks.md                  # III päev Phase 1 — implementatsiooni checklist
+├── .agents/skills/
+│   ├── sprint-planning/              # II päev PO-osa; III päev arendaja-osa juurde
+│   ├── nextjs-implementation/        # III päev — sina ehitad
+│   ├── playwright-mcp/               # III päev — sina ehitad
+│   ├── playwright-spec/              # III päev — sina ehitad
+│   └── code-review/                  # III päev — sina ehitad
+└── .cursor/skills/sprint-planning/   # II päev (Cursori jaoks; sisu sama mis .agents/-i all)
 ```
 
 **Repo:** `https://github.com/jarmo-productory/smit-ohukaart-naide`
@@ -25,28 +35,29 @@ smit-ohukaart-naide/
 
 ## 1.1. Repo lokaalselt
 
+> **NB!** II päeva lõpus on repos ainult dokumentatsioon ja prototüüp — Next.js skeletoni veel pole. `package.json` luuakse alles T1 task'is (vt 3.2). `npm install` annab seetõttu vea kuni T1 lõpuni.
+
 **Variant A —** `gh` **CLI + fork (soovitatud, H4 PR jaoks):**
 
 ```bash
 gh repo fork jarmo-productory/smit-ohukaart-naide --clone --remote
-cd smit-ohukaart-naide && npm install && npm run dev
+cd smit-ohukaart-naide
 ```
 
 **Variant B — manuaalne** `git clone`**:**
 
 ```bash
 git clone https://github.com/jarmo-productory/smit-ohukaart-naide.git
-cd smit-ohukaart-naide && npm install && npm run dev
+cd smit-ohukaart-naide
 ```
 
 **Variant C — Cursor agent klonib:**
 
 ```plaintext
-Klooni https://github.com/jarmo-productory/smit-ohukaart-naide,
-käivita npm install + npm run dev.
+Klooni https://github.com/jarmo-productory/smit-ohukaart-naide.
 ```
 
-Kontroll: `localhost:3000` näitab Ohukaart skeletoni.
+Kontroll: `ls docs/sprints/sprint-01-mvp-kiirteavitus/` annab `spec.md`, `sprint-plan.md`, `prototype/`, `research/`.
 
 ## 1.2. Playwright MCP setup (kui vaja)
 
@@ -61,19 +72,19 @@ Playwrighti vaja siis, kui meil Cursori sisemine brauser ei all kontrollile ming
 
 1.  **Restart Cursor** (Cmd+Q).
     
-2.  **Test:** agent chat'is → *"Võta screenshot localhost:3000 lehest."* — screenshot tuleb → MCP töötab.
+2.  **Test:** agent chat'is → *"Võta screenshot https://example.com lehest."* — screenshot tuleb → MCP töötab. (Pärast T1-d saad sama testida `localhost:3000` peal.)
     
 
 ## 1.3. Sprint-paketi sisselugemine
 
 ```plaintext
-Loe sisse: AGENTS.md, docs/sprints/sprint-01-pildi-saatmine/ (kõik failid),
+Loe sisse: AGENTS.md, docs/sprints/sprint-01-mvp-kiirteavitus/ (kõik failid),
 .agents/skills/sprint-planning/SKILL.md.
 
 Tee 5-rea kokkuvõte:
 - Sprint Goal (sprint-plan.md-st)?
 - R-ide arv spec.md-s?
-- Gherkin'i arv scenarios.md-s?
+- scenarios.md staatus (II päeval ei loodud — Phase 1 ülesanne III päeval)?
 - AGENTS.md sektsioonide 1-4 staatus (täidetud / tühi)?
 - sprint-planning skill: Workflow sammude arv (PO osa)?
 ```
@@ -117,11 +128,16 @@ Lisa: HARD GATE sprint-haru loomine + technical-plan.md generation rules
 Eeskuju kogu sprint-tsükli range agent: ~/.../ritemark-native/.claude/agents/sprint-manager.md.
 ```
 
-## 2.2. Sprint-haru + artefaktid
+## 2.2. Sprint-haru + Phase 1 artefaktid
+
+II päeval valmisid ainult `spec.md` + `sprint-plan.md`. Phase 1 ülesanne III päeval: loo `scenarios.md` (Gherkin S1..Sn), `technical-plan.md` (Next.js stack + API kontuur) ja `tasks.md` (T1 = skeleton, T2..Tn = R1..R6 implementatsioon).
 
 ```plaintext
-Käivita `sprint-planning` skill paketile docs/sprints/sprint-01-pildi-saatmine/.
+Käivita `sprint-planning` skill (arendaja-osa) paketile
+docs/sprints/sprint-01-mvp-kiirteavitus/.
 Initsiaalid haru-nime jaoks: <X>.
+
+Phase 1 tuleb täita: scenarios.md, technical-plan.md, tasks.md.
 Vii sprint Phase 2 → Phase 3 üleminekuni.
 ```
 
@@ -146,12 +162,15 @@ täiendust (nt projekti konventsioon, mis seni ei olnud kirjas).
 
 ## 3.2. Sprint-01 implementatsioon
 
-> **Eelkontroll:** Ava `tasks.md` — kas T1 (skeleton) ja T2 (feature) on eraldi faasidena kirjas? Näide: `help/sprint-paketi-naited/tasks.md`
+> **Eelkontroll:** Ava `tasks.md` — kas T1 (skeleton) ja T2..Tn (feature) on eraldi faasidena kirjas? Näide: `help/sprint-paketi-naited/tasks.md`
+>
+> **NB!** II päeva lõpus on repo veel ilma `package.json`-ita. **T1 ülesanne on Next.js skeletoni loomine** (`npm create next-app@latest .` Tailwind + TypeScript + App Router + ESLint), millele lisad esimese `/` route'i Ohukaart logoga avalehega. Alles pärast T1-te töötab `localhost:3000` ja saab T2..Tn jätkata.
 
 ```plaintext
-Käivita `nextjs-implementation` skill paketile docs/sprints/sprint-01-pildi-saatmine/.
-Implementeeri tasks.md T1 (skeleton), siis T2 (põhi-feature). Iga task = eraldi commit.
-Kontrolli brauseris localhost:3000 pärast iga task'i.
+Käivita `nextjs-implementation` skill paketile docs/sprints/sprint-01-mvp-kiirteavitus/.
+Implementeeri tasks.md T1 (skeleton): `npm create next-app@latest .` + Tailwind +
+esimene route. Siis T2..Tn (R1..R6: tekstiväli, GPS, ack, dispetšeri demo).
+Iga task = eraldi commit. Kontrolli brauseris localhost:3000 pärast iga task'i.
 ```
 
 * * *
@@ -204,8 +223,10 @@ NB! Vaata, et pärast playwright testid saaks ka QA intent arhitektuuri osaks!
 
 **Samm 1 — MCP eksploratsioon** (iga Gherkin stsenaarium korra läbi):
 
+> Eeldab, et `scenarios.md` on Phase 1-s loodud (S1..Sn katavad R1..R6 happy ja sad rajad — tekst sisestatud, GPS keelatud, server 500, jne).
+
 ```plaintext
-Käivita `playwright-mcp` skill paketile docs/sprints/sprint-01-pildi-saatmine/.
+Käivita `playwright-mcp` skill paketile docs/sprints/sprint-01-mvp-kiirteavitus/.
 Jooksuta stsenaariumid S1, S2, S3 MCP kaudu (localhost:3000). Raportoi PASS/FAIL + screenshot.
 Tee ka 2 exploratory check'i (nt tühi input, kahekordne klõps).
 ```
@@ -248,20 +269,22 @@ Võimalik PRi käsk, mida agent võiks kasutada.
 
 ```bash
 gh pr create \
-  --base master \
-  --head sprint-01-pildi-saatmine-<initsiaalid> \
-  --title "Sprint 01: Pildi saatmine + ack" \
+  --base main \
+  --head sprint-01-mvp-kiirteavitus-<initsiaalid> \
+  --title "Sprint 01: MVP kiirteavitus (tekst + GPS + ack)" \
   --body "$(cat <<'EOF'
 ## Summary
-- Implementeerib R1 (pildi saatmine) + R2 (ack kuvamine)
-- Playwright testid (S1, S2, S3)
-- QA findings: docs/sprints/sprint-01-pildi-saatmine/research/qa-findings.md
+- Implementeerib R1 (tekstiteavitus) + R2 (GPS automaatne) + R3 (vastuvõtukinnitus)
+- R4 dispetšeri demo vaade, R5 HTTPS, R6 latentsus p95 ≤ 5 s
+- Playwright testid (S1..Sn scenarios.md-st)
+- QA findings: docs/sprints/sprint-01-mvp-kiirteavitus/research/qa-findings.md
 
 ## Test plan
-- [x] S1 happy path (Playwright pass)
-- [x] S2 GPS puudub (Playwright pass)
-- [x] S3 server 500 (Playwright pass)
-- [x] Exploratory: empty input, rapid clicks (vt qa-findings.md)
+- [x] S1 happy path tekst + GPS + ack (Playwright pass)
+- [x] S2 GPS keelatud (saatmine blokeeritud)
+- [x] S3 server 500 (selge veaolek, ack ei kuvata)
+- [x] R4 dispetšeri vaates teavitus ≤ 60 s
+- [x] Exploratory: tühi input, rapid clicks (vt qa-findings.md)
 EOF
 )"
 ```
