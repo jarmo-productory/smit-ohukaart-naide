@@ -10,8 +10,9 @@
 __pycache__/
 *.pyc
 
-# Cursor lokaalne
-.cursor/
+# Cursor lokaalne cache (aga skills/ peab olema tracked, et osalejad saaksid alla tõmmata)
+.cursor/*
+!.cursor/skills/
 
 # Ajutised failid
 *.tmp
