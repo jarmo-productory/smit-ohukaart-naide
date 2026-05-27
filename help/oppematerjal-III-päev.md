@@ -181,18 +181,18 @@ Loe .agents/skills/sprint-planning/SKILL.md läbi ja vasta:
 2. `When to use` tabel: kuidas skill aru saab, KUS faasis (Bootstrap / Phase 0 /
    Phase 1) ta peab alustama? Mis on auto-detect reegel?
 
-3. Stage 2 (Phase 0) sisaldab `git checkout -b ...` käsku. Miks ei tee skill seda
+3. Phase 0 sisaldab `git checkout -b ...` käsku. Miks ei tee skill seda
    automaatselt, vaid alustab pre-flight kontrolliga (`git status`, branch nimi)?
 
-4. Stage 3 (Phase 1) loob 3 faili kindlas järjekorras: scenarios.md →
+4. Phase 1 loob 3 faili kindlas järjekorras: scenarios.md →
    technical-plan.md → tasks.md. Miks just selles järjekorras? Mis sõltuvused
    on failide vahel?
 
-5. Iga stage'i lõpus on "gate" checklist. Mis vahe on Bootstrap gate'il,
+5. Iga sammu lõpus on "gate" checklist. Mis vahe on Bootstrap gate'il,
    Phase 0 gate'il ja Phase 1 gate'il?
 ```
 
-Arutelu: kus on skill nõrk? Mida sa lisaksid (nt täiendav stage, lisakontroll, parem error-handling)?
+Arutelu: kus on skill nõrk? Mida sa lisaksid (nt täiendav samm, lisakontroll, parem error-handling)?
 
 ## 2.2. Loo Sprint-01 lõppdokumentatsioon
 

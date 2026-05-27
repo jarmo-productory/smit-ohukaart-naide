@@ -1,10 +1,10 @@
 ---
 name: sprint-planning
 description: >-
-  Plans an Ohukaart sprint end-to-end in three stages: Bootstrap (spec.md +
+  Plans an Ohukaart sprint end-to-end in three steps: Bootstrap (spec.md +
   sprint-plan.md from docs/roadmap.md row), Phase 0 (sprint branch +
   research/initial-audit.md + research/adversarial-review.md), Phase 1
-  (scenarios.md + technical-plan.md + tasks.md). Auto-detects current stage from
+  (scenarios.md + technical-plan.md + tasks.md). Auto-detects current step from
   folder contents. Use when the user says "uus sprint", "loo sprint-pakett",
   "alusta sprinti", "vii sprint Phase 0/1-sse", "loo scenarios/technical-plan/
   tasks", "arendaja sprint-planning". Never implements code or commits unless
@@ -13,17 +13,19 @@ description: >-
 
 # Sprint Planning (Ohukaart)
 
-Drives the full planning lifecycle in three sequential stages. Implementation belongs to `nextjs-implementation` skill.
+Drives the full planning lifecycle in three sequential steps. Implementation belongs to `nextjs-implementation` skill.
 
-| Stage | Output |
+| Step | Output |
 | --- | --- |
 | **Bootstrap** | `spec.md` (WHAT) + `sprint-plan.md` (HOW) |
 | **Phase 0** | sprint branch + `research/initial-audit.md` + `research/adversarial-review.md` |
 | **Phase 1** | `scenarios.md` + `technical-plan.md` + `tasks.md` |
 
-## Stage detection (run first, always)
+> Naming: **Bootstrap** is the pre-Phase step (PO bootstrap). **Phase 0** and **Phase 1** match `sprint-plan.md`'s delivery-path phases of the same names. After Phase 1, the sprint moves to Phase 2..N (implementation), which belongs to `nextjs-implementation` skill.
 
-List `docs/sprints/sprint-XX-<slug>/` and pick the stage where output is missing. Skip completed stages. If the user names a specific stage ("vii sprint Phase 0-sse"), honor that.
+## Auto-detect step (run first, always)
+
+List `docs/sprints/sprint-XX-<slug>/` and pick the step where output is missing. Skip completed steps. If the user names a specific step ("vii sprint Phase 0-sse"), honor that.
 
 | Folder state | Start at |
 | --- | --- |
@@ -33,7 +35,7 @@ List `docs/sprints/sprint-XX-<slug>/` and pick the stage where output is missing
 | All Phase 1 files present | Stop — suggest `nextjs-implementation` on `tasks.md` T1 |
 | `spec.md` already filled and user re-requests Bootstrap | Offer update; do not overwrite |
 
-Before writing any file: read `AGENTS.md` (§5 rules, §2 stack), the roadmap row, `docs/sprints/README.md`, and `_template/` for the stage you are about to run. If continuing from earlier stage, re-read its output so later stages stay consistent.
+Before writing any file: read `AGENTS.md` (§5 rules, §2 stack), the roadmap row, `docs/sprints/README.md`, and `_template/` for the step you are about to run. If continuing from earlier step, re-read its output so later steps stay consistent.
 
 ## Derive sprint identity
 
@@ -52,7 +54,7 @@ If the user gives only a title, map it to the matching roadmap row. Do not inven
 
 * * *
 
-## Stage 1 — Bootstrap
+## Bootstrap
 
 ### `spec.md` (WHAT)
 
@@ -111,7 +113,7 @@ Copy **Agent Runtime Instructions** verbatim from `docs/sprints/_template/sprint
 | Risks | Table: Risk \| Mitigation |
 | Status | Track, current phase, branch name |
 
-Phase 0 template (always include — executed in Stage 2 of this skill):
+Phase 0 template (always include — executed by this skill's Phase 0 section):
 
 ```markdown
 ### Phase 0: Audit and plan
@@ -139,7 +141,7 @@ Rules:
 
 * * *
 
-## Stage 2 — Phase 0: Audit and branch
+## Phase 0: Audit and branch
 
 ### Pre-flight
 
@@ -200,7 +202,7 @@ At least **3 counter-arguments** to spec choices. Hostile to the spec, not the a
 
 * * *
 
-## Stage 3 — Phase 1: SDD artefaktid
+## Phase 1: SDD artefaktid
 
 Generate in this order — later files depend on earlier ones: `scenarios.md` → `technical-plan.md` → `tasks.md`.
 
@@ -312,9 +314,9 @@ Rules:
 
 * * *
 
-## Output to user (after each stage)
+## Output to user (after each step)
 
-One short report: stage completed, paths created/updated, open questions or HARD GATEs needing input, suggested next step.
+One short report: step completed, paths created/updated, open questions or HARD GATEs needing input, suggested next step.
 
 | Just completed | Suggested next |
 | --- | --- |
