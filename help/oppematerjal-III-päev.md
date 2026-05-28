@@ -1,7 +1,7 @@
 # SMIT koolituse õppematerjal: päev III ehk praktiline arendus ja QA
 
 > See on koolituse **osalejatele mõeldud materjal** — sisaldab harjutuste lühikirjeldusi ja copy-paste prompte. Kasuta koos koolitusel toimuva juhendamisega.
->
+> 
 > **Tööriistad:** materjal eeldab Cursor IDE-d (Agent + Source Control tab + built-in brauser) ja `gh` CLI-d. Claude Code / VS Code Copilot kasutajad saavad enamiku samme läbi teha, aga § 1.2 brauseri-tee ja § 5.2 Agent Review on Cursori-spetsiifilised.
 
 ## Kontekst
@@ -34,7 +34,7 @@ smit-ohukaart-naide/
 
 # 1 Setup ja konteksti sisselugemine
 
-## 1.1. Repo lokaalselt
+## 1.1. Repo lokaalseks
 
 **Eeltöö (käsitsi, üks kord):**
 
@@ -60,7 +60,7 @@ jarmo-productory/smit-ohukaart-naide).
 Kui `gh` pole installitud või autentimata, ütle mulle, mida käsitsi teha.
 ```
 
-Kontroll: `ls docs/sprints/sprint-01-mvp-kiirteavitus/` annab `spec.md`, `sprint-plan.md`, `prototype/`, `research/`. `git remote -v` näitab nii `origin`\-i (sinu fork) kui `upstream`\-i (jarmo-productory).
+Kontrolli üle.
 
 ## 1.2. Brauseri-kontroll: Cursori built-in brauser
 
@@ -377,9 +377,13 @@ AI reviewer'i (Cursor BugBot) saab käivitada ainult siis, kui see on **sinu for
 **Kontrollnimekiri (üks kord, enne § 5.4):**
 
 1.  Logi sisse [cursor.com/dashboard](https://cursor.com/dashboard) (sama konto, millega Cursor app on autoriseeritud).
+    
 2.  Vasak menüü → **BugBot** → **"Connect repository"**.
+    
 3.  Autoriseeri GitHub → vali oma fork (`<sinu-user>/smit-ohukaart-naide`) → Connect.
+    
 4.  Veendu, et BugBot dashboard näitab fork'i staatuses **"Active"** või sarnane.
+    
 
 **Kontroll (kuiv-test):** ava oma forki GitHubis → "Pull requests" tab → "New pull request" (tühi PR pole vaja luua, ainult vaata, et oleksid õiges repos). Praegu PR-i sisu pole — tegelik PR luuakse § 5.3-s.
 
