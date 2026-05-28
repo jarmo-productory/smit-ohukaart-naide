@@ -93,14 +93,14 @@ Kodanik saab kiiresti ja lihtsalt teada anda tekstiga, teades et asukoht on kaas
 
 ## Success Criteria
 
-- [ ] R1 acceptance criteria läbib
-- [ ] R2 acceptance criteria läbib
-- [ ] R3 acceptance criteria läbib
-- [ ] R4 acceptance criteria läbib (pärast HARD GATE)
-- [ ] R5 acceptance criteria läbib (HTTPS QA)
-- [ ] R6 acceptance criteria läbib (p95 ≤ 5 s dokumenteeritud)
-- [ ] `docs/CHANGELOG.md` uuendatud
-- [ ] Sprint-kataloogi `research/` sisaldab adversarial review'i
+- [x] R1 acceptance criteria läbib
+- [x] R2 acceptance criteria läbib
+- [x] R3 acceptance criteria läbib
+- [x] R4 acceptance criteria läbib (HARD GATE approved; `/dispatcher` stub)
+- [x] R5 acceptance criteria läbib (S9 local; S10 Deploy Preview QA — merge gate, vt `tasks.md`)
+- [x] R6 acceptance criteria läbib (p95 ≤ 5 s — `research/latency-notes.md`)
+- [x] `docs/CHANGELOG.md` uuendatud
+- [x] Sprint-kataloogi `research/` sisaldab adversarial review'i
 
 ## Proposed Delivery Path
 
@@ -117,6 +117,7 @@ Kodanik saab kiiresti ja lihtsalt teada anda tekstiga, teades et asukoht on kaas
 - [ ] Täida `technical-plan.md` (klient, API, stub, andmemudel, TLS)
 - [ ] Täida `tasks.md` (R1–R6 taskid)
 - [x] `prototype/` — kodaniku saatmise UI ([index.html](prototype/index.html), [README](prototype/README.md)); v2 valitud
+- [ ] **Käsitsi QA checklist (Deploy Preview sõltuv, ei blokeeri MVP-d):** S10/R5 mixed-content ja HTTP fallback — vt [tasks.md](tasks.md) § Deploy Preview QA; URL **TBD** kuni PR-i Deploy Preview tekib
 
 ### Phase 2: Backend ja operatiivvaate stub
 
@@ -162,7 +163,14 @@ _Täidetakse implementatsiooni käigus. Viited R1, R2, … peavad olema jälgita
 
 ## Validation Notes
 
-_Täidetakse QA faasis._
+| Kontroll | Tulemus | Viide |
+| --- | --- | --- |
+| Playwright e2e | PASS | `npm run test:e2e` — 12 passed, 1 skipped (S10) |
+| Build | PASS | `npm run build` |
+| R6 p95 ≤ 5 s | PASS | `research/latency-notes.md` |
+| R4 dispetšeri vaade ≤ 60 s | PASS | `dispatcher-view.spec.ts` |
+| TLS S9 (local) | PASS | `latency.spec.ts` S9 — suhteline URL |
+| TLS S10 (Deploy Preview) | **TBD** | Käsitsi QA merge gate — vt `tasks.md` § Deploy Preview QA; URL lisatakse PR-i tekkimisel |
 
 ## Release Note Handling
 
@@ -183,6 +191,5 @@ Sprint 01 kasutab repo-sisest lihtsustatud spec-driven development protsessi.
 ## Status
 
 **Track:** Full 6-phase  
-**Current phase:** Phase 1 — SDD täiendus (prototüüp valmis; scenarios/technical-plan/tasks puuduvad)  
-**Branch:** `sprint-01-mvp-kiirteavitus` (luuakse Phase 0 esimese ülesande käigus)  
-**Worktree:** `/Users/jarmotuisk/Projects/smit-ohukaart-naide`
+**Current phase:** Done — MVP implementeeritud; S10 Deploy Preview QA merge gate TBD  
+**Branch:** `sprint-01-mvp-kiirteavitus`

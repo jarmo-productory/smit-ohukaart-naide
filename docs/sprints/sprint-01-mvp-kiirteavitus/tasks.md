@@ -43,15 +43,28 @@
 
 - [x] **R1–R3, S1–S6:** Playwright `citizen-send.spec.ts` + `gps-block.spec.ts`
 - [x] **R4, S7, S8:** Playwright `dispatcher-view.spec.ts`
-- [x] **R5, S9, S10:** HTTPS kontroll (suhteline URL local; täielik TLS Deploy Preview QA)
+- [x] **R5, S9, S10:** HTTPS kontroll — S9 automaatne (suhteline URL local); S10 `test.skip` + käsitsi QA (vt allpool Deploy Preview QA)
 - [x] **R6, S11, S12:** Playwright `latency.spec.ts` — p95 ≤5 s; tulemus → `research/latency-notes.md`
 
 **Commit pärast faasi:** `test: T6 e2e + latency (R5, R6)`
 
+## Deploy Preview QA (R5, S10) — merge gate
+
+> **Ei blokeeri MVP planeerimist ega implementatsiooni.** Täidetakse pärast Netlify Deploy Preview URL-i tekkimist (tavaliselt PR-i avamisel).
+
+- [ ] **TBD:** Netlify Deploy Preview URL lisatakse PR-i tekkimisel
+- [ ] **QA (S10, R5):** kontrollida Deploy Preview keskkonnas, et mixed-content warninguid ei teki ja HTTP fallbacki ei kasutata
+  - ava Deploy Preview URL brauseris; ava DevTools → Console ja Network
+  - saada kehtiv teavitus (S1 happy path)
+  - Console: mixed-content hoiatusi ei tohiks tekkida
+  - Network: `POST` `/api/alerts` peab minema `https://` URL-ile
+  - kood ei tohi kasutada kõva `http://` API base URL-i
+- [ ] **Gate:** enne merge'i peab kontroll olema tehtud Deploy Preview URL-il
+
 ## Phase 7: T7 — Closeout
 
 - [x] Smoke check kõikide R-nõuete vastu (käsitsi + e2e)
-- [x] Playwright testid läbivad (`npm run test:e2e` — 9/9)
+- [x] Playwright testid läbivad (`npm run test:e2e` — 12/12 passed, 1 skipped S10)
 - [x] Loo/uuenda `docs/CHANGELOG.md` — üks kirje sprint 01 kohta
 - [x] Uuenda `sprint-plan.md` Status: **Done**
 - [ ] Sulge / uuenda linked GitHub Issue (TBD — vajab `git remote` + `gh auth`; sprint-plan § Linked Issues)
@@ -75,5 +88,5 @@
 | T3 citizen form | 3 | R1, R2 | S1–S4 | ✅ |
 | T4 send flow | 4 | R3, R6 | S5, S6, S11, S12 | ✅ |
 | T5 dispatcher | 5 | R4 | S7, S8 | ✅ |
-| T6 e2e + latency | 6 | R5, R6 | S9–S12 | ✅ |
-| T7 closeout | 7 | R1–R6 | S1–S12 | ✅ (GitHub issue TBD) |
+| T6 e2e + latency | 6 | R5, R6 | S9–S12 | ✅ (S10 → Deploy Preview QA gate) |
+| T7 closeout | 7 | R1–R6 | S1–S12 | ✅ (GitHub issue TBD; S10 merge gate TBD) |
