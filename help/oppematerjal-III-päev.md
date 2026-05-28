@@ -72,9 +72,7 @@ docs/sprints/sprint-01-mvp-kiirteavitus/prototype/index.html.
 Tee screenshot ja kirjelda, mis ekraanil näha on.
 ```
 
-Kui agent käivitab kohaliku serveri (nt `python3 -m http.server`) ja navigeerib `localhost:<port>` peale + tagastab screenshot'i — kõik töötab.
-
-**Plaan B — Playwright MCP (backup):** Kui Cursori built-in brauseril mingil põhjusel ei suju (nt tugevamad selectorid, isoleeritud browser context, automaatne PASS/FAIL retry), võib agent vahetada Playwright MCP peale. Setup pole praegu vaja — see ehitatakse § 4-s niikuinii.
+**Plaan B — Playwright MCP (backup):** Kui Cursori built-in brauseril mingil põhjusel ei suju (nt tugevamad selectorid, isoleeritud browser context, automaatne PASS/FAIL retry), võid paluda agendil vahetada Playwright MCP peale. Setup pole praegu vaja — see ehitatakse § 4-s niikuinii.
 
 ## 1.3. Sprint-paketi sisselugemine
 
