@@ -17,3 +17,12 @@ __pycache__/
 # Ajutised failid
 *.tmp
 *~
+
+test-results/
+playwright-report/
+node_modules/
+.next/
+out/
+tsconfig.tsbuildinfo
+npm-debug.log*
+.env*.local
